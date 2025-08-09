@@ -6,10 +6,633 @@
     <title>JMB's 22nd Raffle Registration & Ticket Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .prize-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .form-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        .raffle-number {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .ticket {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border: 3px dashed #667eea;
+            position: relative;
+        }
+        .ticket::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+        .ticket::after {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+        .prize-item {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 4px 0;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .prize-item:nth-child(2) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .prize-item:nth-child(3) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        .prize-item:nth-child(4) {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .ticket { page-break-inside: avoid; margin: 20px 0; }
+        }
+    </style>
 </head>
-<body>
-    <!-- HTML content moved here without inline JS -->
-    <script src="scripts.js"></script>
-</body>
+<body class="gradient-bg min-h-screen py-8 px-4">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8 no-print">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">
+                JMB's <span class="raffle-number">22nd</span> Raffle
+            </h1>
+            <p class="text-xl text-white/90 font-medium">Registration & Ticket Generator</p>
+            <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4 mt-4 max-w-md mx-auto">
+                <p class="text-white font-semibold">📅 Registration Period</p>
+                <p class="text-white/90 text-sm">September 13, 2025 - December 13, 2025</p>
+                <div class="mt-3 pt-3 border-t border-white/30">
+                    <p class="text-white font-semibold">🎯 Draw Date</p>
+                    <p class="text-white/90 text-sm">January 1st, 2027 - 8:00 AM onwards</p>
+                </div>
+            </div>
+            <div class="w-24 h-1 bg-yellow-400 mx-auto mt-4 rounded-full"></div>
+        </div>
+
+        <!-- Prize Display -->
+        <div class="prize-card rounded-2xl p-6 mb-8 text-center no-print">
+            <div class="text-6xl mb-4">🏆</div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Amazing Prizes to Win!</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl p-4">
+                    <h3 class="text-lg font-semibold mb-2">🥇 10th Winner</h3>
+                    <p class="text-sm">Washing Machine w/Dryer + ₱5,000 + 5% DC for Printing Services</p>
+                </div>
+                <div class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl p-4">
+                    <h3 class="text-lg font-semibold mb-2">📺 20th Winner</h3>
+                    <p class="text-sm">BRAND NEW TV + ₱5,000 + 5% DC for Printing Services</p>
+                </div>
+                <div class="bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-xl p-4">
+                    <h3 class="text-lg font-semibold mb-2">💰 30th Winner</h3>
+                    <p class="text-sm">₱5,000 + 10% DC for Printing Services</p>
+                </div>
+                <div class="bg-gradient-to-r from-pink-600 to-yellow-600 text-white rounded-xl p-4">
+                    <h3 class="text-lg font-semibold mb-2">🎯 40th Winner</h3>
+                    <p class="text-sm">₱10,000 + 15% DC for Printing Services</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8 mb-8 no-print" id="registrationForm">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Enter to Win!</h3>
+            
+            <form id="raffleForm" class="space-y-6">
+                <!-- Personal Information -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-2">
+                            First Name *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="firstName" 
+                            name="firstName" 
+                            required
+                            class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-all duration-300"
+                            placeholder="Enter your first name"
+                        >
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Last Name *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="lastName" 
+                            name="lastName" 
+                            required
+                            class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-all duration-300"
+                            placeholder="Enter your last name"
+                        >
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Email Address *
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required
+                        class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-all duration-300"
+                        placeholder="your.email@example.com"
+                    >
+                </div>
+
+                <div>
+                    <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Phone Number *
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        required
+                        class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-all duration-300"
+                        placeholder="(555) 123-4567"
+                    >
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Address *
+                    </label>
+                    <input 
+                        type="text" 
+                        id="address" 
+                        name="address" 
+                        required
+                        class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-all duration-300"
+                        placeholder="123 Main Street"
+                    >
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="city" class="block text-sm font-semibold text-gray-700 mb-2">
+                            City *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="city" 
+                            name="city" 
+                            required
+                            class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-all duration-300"
+                            placeholder="City"
+                        >
+                    </div>
+                    <div>
+                        <label for="state" class="block text-sm font-semibold text-gray-700 mb-2">
+                            State *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="state" 
+                            name="state" 
+                            required
+                            class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-all duration-300"
+                            placeholder="State"
+                        >
+                    </div>
+                    <div>
+                        <label for="zip" class="block text-sm font-semibold text-gray-700 mb-2">
+                            ZIP Code *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="zip" 
+                            name="zip" 
+                            required
+                            class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-all duration-300"
+                            placeholder="12345"
+                        >
+                    </div>
+                </div>
+
+                <!-- Number of Tickets -->
+                <div>
+                    <label for="tickets" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Number of Tickets
+                    </label>
+                    <select 
+                        id="tickets" 
+                        name="tickets"
+                        class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-all duration-300"
+                    >
+                        <option value="1">1 Ticket - ₱50</option>
+                        <option value="3">3 Tickets - ₱120</option>
+                        <option value="5">5 Tickets - ₱200</option>
+                        <option value="10">10 Tickets - ₱350</option>
+                    </select>
+                </div>
+
+                <!-- Payment Information -->
+                <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
+                    <h4 class="text-lg font-bold text-blue-800 mb-4 text-center">💳 Payment Information</h4>
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">📱</div>
+                            <p class="text-sm font-semibold text-gray-700 mb-1">Send payment via GCash to:</p>
+                            <p class="text-xl font-bold text-blue-600 mb-1">09931109148</p>
+                            <p class="text-sm text-gray-600 mb-3">Jorenz M. Balbuena</p>
+                            <div class="text-xs text-gray-500 bg-gray-50 rounded p-2">
+                                <p class="font-semibold">📋 Payment Instructions:</p>
+                                <p>1. Select your tickets above</p>
+                                <p>2. Send exact amount to the GCash number</p>
+                                <p>3. Complete registration form</p>
+                                <p>4. Keep your tickets and GCash receipt</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="flex items-start space-x-3">
+                    <input 
+                        type="checkbox" 
+                        id="terms" 
+                        name="terms" 
+                        required
+                        class="mt-1 w-5 h-5 text-purple-600 border-2 border-gray-300 rounded focus:ring-purple-500"
+                    >
+                    <label for="terms" class="text-sm text-gray-600 leading-relaxed">
+                        I agree to the terms and conditions of JMB's 22nd Raffle. I understand that winners will be contacted using the information provided above. *
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="submit-btn w-full py-4 px-8 text-white font-bold text-lg rounded-xl transition-all duration-300"
+                >
+                    Register & Generate Tickets 🎟️
+                </button>
+            </form>
+        </div>
+
+        <!-- Generated Tickets Container -->
+        <div id="ticketsContainer" class="hidden">
+            <div class="text-center mb-6 no-print">
+                <h2 class="text-3xl font-bold text-white mb-4">Your Raffle Tickets</h2>
+                <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300">
+                    🖨️ Print Tickets
+                </button>
+                <button onclick="location.reload()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 ml-4">
+                    🔄 Register Another
+                </button>
+            </div>
+            <div id="ticketsList" class="space-y-6">
+                <!-- Tickets will be generated here -->
+            </div>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="text-center mt-8 text-white/80 no-print">
+            <p class="text-sm">🎯 Drawing Date: January 1st, 2027 at 8:00 AM • Good luck to all participants!</p>
+        </div>
+    </div>
+
+    <script>
+        // Generate unique ticket number
+        function generateTicketNumber() {
+            const timestamp = Date.now().toString().slice(-6);
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `JMB22${timestamp}${random}`;
+        }
+
+        // Generate barcode
+        function generateBarcode(ticketNumber, canvasId) {
+            JsBarcode(`#${canvasId}`, ticketNumber, {
+                format: "CODE128",
+                width: 2,
+                height: 60,
+                displayValue: true,
+                fontSize: 12,
+                margin: 10
+            });
+        }
+
+        // Create ticket HTML
+        function createTicket(ticketNumber, participantName, ticketIndex, totalTickets) {
+            const currentDate = new Date().toLocaleDateString();
+            const canvasId = `barcode-${ticketIndex}`;
+            
+            return `
+                <div class="ticket rounded-2xl p-6 mx-4 bg-white">
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <!-- Left Section - Event Info -->
+                        <div class="text-center md:text-left">
+                            <h3 class="text-2xl font-bold text-purple-700 mb-2">JMB's 22nd RAFFLE</h3>
+                            <p class="text-gray-600 font-semibold">Ticket #${ticketIndex + 1} of ${totalTickets}</p>
+                            <p class="text-sm text-gray-500">Date: ${currentDate}</p>
+                            <div class="mt-3">
+                                <p class="text-sm font-semibold text-gray-700">Participant:</p>
+                                <p class="text-lg font-bold text-purple-600">${participantName}</p>
+                            </div>
+                        </div>
+
+                        <!-- Center Section - Barcode -->
+                        <div class="text-center">
+                            <canvas id="${canvasId}" class="mx-auto"></canvas>
+                            <p class="text-xs text-gray-500 mt-2">Ticket ID: ${ticketNumber}</p>
+                        </div>
+
+                        <!-- Right Section - Prizes -->
+                        <div class="text-center md:text-right">
+                            <h4 class="text-lg font-bold text-gray-800 mb-3">🏆 PRIZES</h4>
+                            <div class="space-y-1">
+                                <div class="prize-item">🥇 10th: Washer/Dryer + ₱5K + 5% DC</div>
+                                <div class="prize-item">📺 20th: TV + ₱5K + 5% DC</div>
+                                <div class="prize-item">💰 30th: ₱5K + 10% DC</div>
+                                <div class="prize-item">🎯 40th: ₱10K + 15% DC</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Section - Terms -->
+                    <div class="mt-6 pt-4 border-t-2 border-dashed border-gray-300">
+                        <div class="text-center mb-2">
+                            <p class="text-sm font-bold text-purple-700">🎯 DRAW DATE: January 1st, 2027 - 8:00 AM onwards</p>
+                        </div>
+                        <p class="text-xs text-gray-500 text-center">
+                            Keep this ticket safe • Winners will be announced publicly • Must present ticket to claim prize • 
+                            DC = Discount for Printing Services • Valid ID required for prize claiming
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Check if registration is open
+        function isRegistrationOpen() {
+            const now = new Date();
+            const startDate = new Date('2025-09-13');
+            const endDate = new Date('2025-12-13T23:59:59');
+            
+            return now >= startDate && now <= endDate;
+        }
+
+        // Display registration status
+        function updateRegistrationStatus() {
+            const now = new Date();
+            const startDate = new Date('2025-09-13');
+            const endDate = new Date('2025-12-13T23:59:59');
+            const form = document.getElementById('raffleForm');
+            const submitBtn = document.querySelector('.submit-btn');
+            
+            if (now < startDate) {
+                // Registration hasn't started yet
+                const daysUntilStart = Math.ceil((startDate - now) / (1000 * 60 * 60 * 24));
+                form.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="text-6xl mb-4">⏰</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Registration Opens Soon!</h3>
+                        <p class="text-lg text-gray-600 mb-2">Registration starts on <strong>September 13, 2025</strong></p>
+                        <p class="text-gray-500">${daysUntilStart} days remaining</p>
+                        <div class="mt-6 p-4 bg-blue-50 rounded-xl">
+                            <p class="text-blue-800 font-semibold">🔔 Get Ready!</p>
+                            <p class="text-blue-700 text-sm">Mark your calendar and come back on September 13th to register for amazing prizes!</p>
+                        </div>
+                    </div>
+                `;
+                return false;
+            } else if (now > endDate) {
+                // Registration has ended
+                form.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="text-6xl mb-4">🔒</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Registration Closed</h3>
+                        <p class="text-lg text-gray-600 mb-2">Registration ended on <strong>December 13, 2025</strong></p>
+                        <div class="mt-6 p-4 bg-red-50 rounded-xl">
+                            <p class="text-red-800 font-semibold">📋 Registration Complete</p>
+                            <p class="text-red-700 text-sm">Thank you to everyone who participated! Winners will be announced soon.</p>
+                        </div>
+                    </div>
+                `;
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Send email notification
+        function sendEmailNotification(participantData, ticketNumbers) {
+            const emailData = {
+                to: 'balbuenamusicstudio@gmail.com',
+                subject: `New Raffle Registration - ${participantData.firstName} ${participantData.lastName}`,
+                body: `
+New Registration for JMB's 22nd Raffle:
+
+Participant Details:
+- Name: ${participantData.firstName} ${participantData.lastName}
+- Email: ${participantData.email}
+- Phone: ${participantData.phone}
+- Address: ${participantData.address}, ${participantData.city}, ${participantData.state} ${participantData.zip}
+- Number of Tickets: ${participantData.tickets}
+
+Generated Ticket Numbers:
+${ticketNumbers.join('\n')}
+
+Registration Date: ${new Date().toLocaleString()}
+
+---
+JMB's 22nd Raffle System
+                `.trim()
+            };
+            
+            // Create mailto link (this will open the user's email client)
+            const mailtoLink = `mailto:${emailData.to}?subject=${encodeURIComponent(emailData.subject)}&body=${encodeURIComponent(emailData.body)}`;
+            
+            // For demo purposes, we'll show the email data in console and create a hidden link
+            console.log('Email notification data:', emailData);
+            
+            // Create temporary link and click it to open email client
+            const tempLink = document.createElement('a');
+            tempLink.href = mailtoLink;
+            tempLink.style.display = 'none';
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+        }
+
+        // Form submission handler
+        document.getElementById('raffleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Check if registration is open
+            if (!isRegistrationOpen()) {
+                alert('Registration is not currently open. Please check the registration dates.');
+                return;
+            }
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Validate required fields
+            const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city', 'state', 'zip'];
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field);
+                if (!data[field] || data[field].trim() === '') {
+                    input.classList.add('border-red-500');
+                    isValid = false;
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            });
+            
+            // Check terms checkbox
+            if (!data.terms) {
+                document.getElementById('terms').classList.add('border-red-500');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                // Show error message
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl text-center text-red-700';
+                errorDiv.innerHTML = '⚠️ Please fill in all required fields and accept the terms.';
+                
+                // Remove any existing error messages
+                const existingError = document.querySelector('.bg-red-50');
+                if (existingError) {
+                    existingError.remove();
+                }
+                
+                this.appendChild(errorDiv);
+                
+                // Remove error message after 5 seconds
+                setTimeout(() => {
+                    errorDiv.remove();
+                }, 5000);
+                
+                return;
+            }
+            
+            // Process registration and generate tickets
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = 'Generating Tickets... ⏳';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                // Generate tickets
+                const numTickets = parseInt(data.tickets);
+                const participantName = `${data.firstName} ${data.lastName}`;
+                const ticketsList = document.getElementById('ticketsList');
+                const generatedTicketNumbers = [];
+                
+                // Clear previous tickets
+                ticketsList.innerHTML = '';
+                
+                // Generate each ticket
+                for (let i = 0; i < numTickets; i++) {
+                    const ticketNumber = generateTicketNumber();
+                    generatedTicketNumbers.push(ticketNumber);
+                    const ticketHTML = createTicket(ticketNumber, participantName, i, numTickets);
+                    ticketsList.innerHTML += ticketHTML;
+                }
+                
+                // Generate barcodes after DOM is updated
+                setTimeout(() => {
+                    for (let i = 0; i < numTickets; i++) {
+                        generateBarcode(generatedTicketNumbers[i], `barcode-${i}`);
+                    }
+                }, 100);
+                
+                // Send email notification
+                sendEmailNotification(data, generatedTicketNumbers);
+                
+                // Hide form and show tickets
+                document.getElementById('registrationForm').style.display = 'none';
+                document.getElementById('ticketsContainer').classList.remove('hidden');
+                
+                // Show success message with email notification
+                const successDiv = document.createElement('div');
+                successDiv.className = 'mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center no-print';
+                successDiv.innerHTML = `
+                    <div class="text-2xl mb-2">✅</div>
+                    <h3 class="text-lg font-bold text-green-800 mb-2">Registration Successful!</h3>
+                    <p class="text-green-700 text-sm">Your registration details and ticket numbers have been sent to balbuenamusicstudio@gmail.com</p>
+                `;
+                document.getElementById('ticketsContainer').insertBefore(successDiv, document.getElementById('ticketsList'));
+                
+                // Log registration data
+                console.log('Raffle Registration Data:', {
+                    ...data,
+                    ticketsGenerated: numTickets,
+                    ticketNumbers: generatedTicketNumbers,
+                    timestamp: new Date().toISOString()
+                });
+                
+            }, 2000);
+        });
+        
+        // Phone number formatting
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 6) {
+                value = `(${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)}`;
+            } else if (value.length >= 3) {
+                value = `(${value.slice(0,3)}) ${value.slice(3)}`;
+            }
+            e.target.value = value;
+        });
+        
+        // ZIP code validation
+        document.getElementById('zip').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 5);
+        });
+
+        // Check registration status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateRegistrationStatus();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96c458da43986020',t:'MTc1NDcxMjAzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
